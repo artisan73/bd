@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 2.5em;
+        }
+
+        .message {
+            color: #34495e;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 1.1em;
+        }
+
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .birthday-card {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .balloon {
+            width: 100px;
+            height: 120px;
+            background: #e67e22;
+            border-radius: 50%;
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .button {
+            background: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background: #c0392b;
+        }
+
+        footer {
+            margin-top: 2rem;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Happy Birthday, <span class="highlight">Tindi Sandra</span>! 🎉</h1>
+        
+        <div class="birthday-card">
+            <div class="balloon" style="left: 10%;"></div>
+            <div class="balloon" style="left: 30%; background: #3498db;"></div>
+            <div class="balloon" style="left: 50%; background: #2ecc71;"></div>
+            <div class="balloon" style="left: 70%; background: #9b59b6;"></div>
+        </div>
+
+        <p class="message">
+            Wishing you an incredible day filled with joy, laughter, and wonderful memories. 
+            May this year bring you success, happiness, and all that you aspire to achieve. 
+            Cheers to another amazing year! 🥂
+        </p>
+
+        <button class="button" onclick="showSurprise()">Click for Surprise</button>
+        
+        <footer>
+            <p>Created with ❤️ by Lavi</p>
+        </footer>
+    </div>
+
+    <script>
+        function showSurprise() {
+            const container = document.querySelector('.container');
+            container.style.transform = 'scale(1.05)';
+            
+            // Create floating hearts
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animation = `floatHeart ${Math.random() * 3 + 2}s ease-in-out`;
+                container.appendChild(heart);
+            }
+
+            setTimeout(() => {
+                container.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        // Add balloon animation dynamically
+        document.querySelectorAll('.balloon').forEach((balloon, index) => {
+            balloon.style.animationDelay = `${index * 0.5}s`;
+        });
+    </script>
+
+    <style>
+        @keyframes floatHeart {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</body>
+</html>
