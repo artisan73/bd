@@ -17,138 +17,187 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            overflow: hidden;
         }
 
         .container {
             text-align: center;
             padding: 2rem;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             max-width: 600px;
             margin: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .container:hover {
-            transform: translateY(-5px);
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
         }
 
         h1 {
             color: #2c3e50;
             margin-bottom: 1rem;
-            font-size: 2.5em;
+            font-size: 2.8em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         .message {
             color: #34495e;
             line-height: 1.6;
-            margin-bottom: 1.5rem;
-            font-size: 1.1em;
-        }
-
-        .highlight {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-
-        .birthday-card {
-            position: relative;
             margin: 2rem 0;
-        }
-
-        .balloon {
-            width: 100px;
-            height: 120px;
-            background: #e67e22;
-            border-radius: 50%;
-            position: absolute;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            font-size: 1.2em;
+            position: relative;
         }
 
         .button {
-            background: #e74c3c;
+            background: #ff6b6b;
             color: white;
-            padding: 12px 30px;
+            padding: 15px 40px;
             border: none;
-            border-radius: 25px;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 1em;
-            transition: background 0.3s ease;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
         }
 
-        .button:hover {
-            background: #c0392b;
+        .button:active {
+            transform: scale(0.95);
         }
 
-        footer {
-            margin-top: 2rem;
-            color: #7f8c8d;
-            font-size: 0.9em;
+        .animated-bg {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        .confetti {
+            position: absolute;
+            animation: confettiFall linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .heart {
+            position: absolute;
+            animation: floatHeart 3s ease-out forwards;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) scale(0); opacity: 0; }
+        }
+
+        .stars {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            animation: twinkle 1.5s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
         }
     </style>
 </head>
 <body>
+    <div class="animated-bg" id="animatedBg"></div>
+    
     <div class="container">
-        <h1>Happy Birthday, <span class="highlight">Tindi Sandra</span>! 🎉</h1>
+        <h1>Happy Birthday, <span style="color: #ff6b6b;">Marie</span>! 🎂</h1>
         
-        <div class="birthday-card">
-            <div class="balloon" style="left: 10%;"></div>
-            <div class="balloon" style="left: 30%; background: #3498db;"></div>
-            <div class="balloon" style="left: 50%; background: #2ecc71;"></div>
-            <div class="balloon" style="left: 70%; background: #9b59b6;"></div>
-        </div>
-
         <p class="message">
-            Wishing you an incredible day filled with joy, laughter, and wonderful memories. 
-            May this year bring you success, happiness, and all that you aspire to achieve. 
-            Cheers to another amazing year! 🥂
+            🎈 On your special day, may every moment be filled with happiness, 
+            love, and wonderful surprises! Here's to an amazing year ahead! 🌟
         </p>
 
-        <button class="button" onclick="showSurprise()">Click for Surprise</button>
+        <button class="button" onclick="startCelebration()">Start Celebration 🎉</button>
         
-        <footer>
-            <p>Created with ❤️ by Lavi</p>
-        </footer>
+        <audio id="birthdayAudio">
+            <source src="https://assets.mixkit.co/music/preview/mixkit-happy-birthday-to-you-in-jazz-518.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
     <script>
-        function showSurprise() {
-            const container = document.querySelector('.container');
-            container.style.transform = 'scale(1.05)';
-            
-            // Create floating hearts
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.innerHTML = '❤️';
-                heart.style.position = 'absolute';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animation = `floatHeart ${Math.random() * 3 + 2}s ease-in-out`;
-                container.appendChild(heart);
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff6b6b'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                document.getElementById('animatedBg').appendChild(confetti);
             }
-
-            setTimeout(() => {
-                container.style.transform = 'scale(1)';
-            }, 300);
         }
 
-        // Add balloon animation dynamically
-        document.querySelectorAll('.balloon').forEach((balloon, index) => {
-            balloon.style.animationDelay = `${index * 0.5}s`;
-        });
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = i * 0.1 + 's';
+                document.getElementById('animatedBg').appendChild(heart);
+            }
+        }
+
+        function createStars() {
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'stars';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                document.getElementById('animatedBg').appendChild(star);
+            }
+        }
+
+        function startCelebration() {
+            const audio = document.getElementById('birthdayAudio');
+            audio.play();
+            
+            createConfetti();
+            createHearts();
+            createStars();
+            
+            document.body.style.animation = 'gradientShift 10s infinite alternate';
+        
+            const emojis = ['🎉', '🎂', '🎈', '🎁', '✨', '🥳'];
+            for (let i = 0; i < 30; i++) {
+                const emoji = document.createElement('div');
+                emoji.style.position = 'absolute';
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.fontSize = '25px';
+                emoji.style.animation = `floatHeart ${Math.random() * 2 + 3}s ease-out forwards`;
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                document.getElementById('animatedBg').appendChild(emoji);
+            }
+        }
+
+        createStars();
     </script>
 
     <style>
-        @keyframes floatHeart {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
         }
     </style>
+    <footer>Wishes from Lavi</footer>
 </body>
 </html>
