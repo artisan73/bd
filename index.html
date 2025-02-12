@@ -36,12 +36,12 @@
             font-size: 4.5rem;
             color: #ff6b6b;
             margin-bottom: 1rem;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 1s forwards;
+            opacity: 1;
+            transform: translateY(0);
             position: relative;
             z-index: 3;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: heartbeat 1.5s ease infinite;
         }
 
         .message {
@@ -73,10 +73,14 @@
             border-radius: 10px;
             transition: transform 0.3s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(20px);
+            opacity: 0;
         }
 
-        .photo-item:hover {
-            transform: translateY(-5px) rotate(2deg);
+        .photo-item.active {
+            transform: translateY(0);
+            opacity: 1;
+            animation: photoFloat 3s ease-in-out infinite;
         }
 
         .photo-item img {
@@ -85,10 +89,6 @@
             object-fit: cover;
             display: block;
             transition: transform 0.3s ease;
-        }
-
-        .photo-item:hover img {
-            transform: scale(1.1);
         }
 
         .button {
@@ -107,23 +107,8 @@
             z-index: 3;
         }
 
-        .particles {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255,107,107,0.15);
-            border-radius: 50%;
-            animation: float 20s infinite linear;
-        }
-
         .firework {
-            position: absolute;
+            position: fixed;
             width: 10px;
             height: 10px;
             background: #ff6b6b;
@@ -139,13 +124,6 @@
             }
         }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(10vw, 10vh); }
-            50% { transform: translate(-5vw, 20vh); }
-            75% { transform: translate(-10vw, 5vh); }
-        }
-
         @keyframes explode {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(20); opacity: 0; }
@@ -153,10 +131,13 @@
 
         @keyframes heartbeat {
             0% { transform: scale(1); }
-            15% { transform: scale(1.1); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.05); }
-            60% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes photoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
         }
 
         footer {
@@ -168,15 +149,6 @@
             z-index: 2;
         }
 
-        .glow {
-            animation: textGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes textGlow {
-            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff6b6b, 0 0 40px #ff6b6b; }
-            to { text-shadow: 0 0 20px #fff, 0 0 30px #ff8e8e, 0 0 40px #ff8e8e, 0 0 50px #ff8e8e; }
-        }
-
         @media (max-width: 768px) {
             h1 { font-size: 3rem; }
             .message { font-size: 1.4rem; }
@@ -184,10 +156,8 @@
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    
     <section class="hero">
-        <h1 class="glow">Happy Birthday Marie!</h1>
+        <h1>Happy Birthday Marie!</h1>
         <p class="message">
             🌟 To the most amazing person I know - may your day sparkle with joy, laughter, 
             and unforgettable moments! You deserve the world! 🎂
@@ -208,44 +178,48 @@
     </audio>
 
     <script>
-        // Create floating particles
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.width = Math.random() * 15 + 5 + 'px';
-            particle.style.height = particle.style.width;
-            particle.style.animationDelay = Math.random() * 5 + 's';
-            document.getElementById('particles').appendChild(particle);
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * 100 + '%';
+            firework.style.top = Math.random() * 100 + '%';
+            document.body.appendChild(firework);
+            
+            setTimeout(() => firework.remove(), 1000);
         }
 
-        function createFireworks() {
-            for (let i = 0; i < 20; i++) {
-                const firework = document.createElement('div');
-                firework.className = 'firework';
-                firework.style.left = Math.random() * 100 + '%';
-                firework.style.top = Math.random() * 100 + '%';
-                firework.style.animationDelay = i * 0.1 + 's';
-                document.body.appendChild(firework);
-            }
+        function activatePhotos() {
+            document.querySelectorAll('.photo-item').forEach(item => {
+                item.classList.add('active');
+            });
         }
 
         function startCelebration() {
             const audio = document.getElementById('birthdayAudio');
+            const button = document.querySelector('.button');
+            
+            // Start music
             audio.play();
             
-            createFireworks();
+            // Activate photo animations
+            activatePhotos();
             
-            // Add subtle heartbeat animation to title
-            const title = document.querySelector('h1');
-            title.style.animation = 'heartbeat 1.5s ease infinite';
+            // Start fireworks interval
+            const fireworksInterval = setInterval(createFirework, 150);
             
-            // Add permanent glow effect
-            title.classList.add('glow');
+            // Disable button
+            button.disabled = true;
+            button.style.opacity = '0.7';
+            
+            // Stop after 26 seconds
+            setTimeout(() => {
+                clearInterval(fireworksInterval);
+                button.disabled = false;
+                button.style.opacity = '1';
+            }, 26000);
         }
 
-        // Initialize observer for scroll animations
+        // Initialize scroll animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
