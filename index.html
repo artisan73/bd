@@ -15,7 +15,7 @@
         body {
             min-height: 100vh;
             font-family: 'Montserrat', sans-serif;
-            background: #f0f0f0;
+            background: #f5f5f5;
             overflow-x: hidden;
         }
 
@@ -65,13 +65,18 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
-            transform: scale(0.9);
+            transition: opacity 0.5s ease-in-out;
+            transform: scale(0.95);
         }
 
         .slide.active {
             opacity: 1;
             transform: scale(1);
+        }
+
+        .slide.vintage {
+            filter: grayscale(100%) sepia(50%);
+            transition: filter 0.5s ease;
         }
 
         .slide img {
@@ -82,7 +87,7 @@
         }
 
         .camera-flash {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -90,7 +95,7 @@
             background: rgba(255, 255, 255, 0.9);
             opacity: 0;
             pointer-events: none;
-            z-index: 4;
+            z-index: 2;
         }
 
         .button {
@@ -195,18 +200,24 @@
         }
 
         function triggerCameraEffect() {
-            // Flash effect
+            // Activate flash only on the photo container
             flash.style.animation = 'flash 0.3s';
-            setTimeout(() => flash.style.animation = '', 300);
             
-            // Shutter sound
+            // Play shutter sound
             shutterSound.currentTime = 0;
             shutterSound.play();
             
-            // Slide transition
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
+            // Add vintage effect after flash
+            setTimeout(() => {
+                slides[currentSlide].classList.add('vintage');
+            }, 300);
+
+            // Transition after 1 second
+            setTimeout(() => {
+                slides[currentSlide].classList.remove('active', 'vintage');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 1300);
         }
 
         function startCelebration() {
@@ -228,7 +239,7 @@
                 clearInterval(slideshowInterval);
                 clearInterval(fireworksInterval);
                 button.disabled = false;
-            }, 36000);
+            }, 26000);
         }
     </script>
 </body>
