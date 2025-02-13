@@ -186,19 +186,20 @@
     <section class="hero">
         <h1>Happy Birthday Marie!</h1>
         <p class="message">
-            🌟 Your special day deserves special memories! Let's capture the moment! 📸
+            🌟 Wishing you a Happy Birthday! Your kindness and spirit light up every room you enter. May this day be filled with laughter and love, and may the year ahead bring you countless adventures, successes, and beautiful moments. Cheers to another year of being amazing!
         </p>
-        <button class="button" onclick="startCelebration()">Start Magic ✨</button>
+        <button class="button" onclick="startCelebration()">Click here✨</button>
     </section>
 
     <div class="slideshow-container">
         <div class="slide active"><img src="photo1.jpg" alt="Memory 1"></div>
-        <div class="slide"><img src="photo2.jpg" alt="Memory 2"></div>
-        <div class="slide"><img src="photo3.jpg" alt="Memory 3"></div>
+        <div class="slide active"><img src="photo2.jpg" alt="Memory 2"></div>
+        <div class="slide active"><img src="photo3.jpg" alt="Memory 3"></div>
+        <div class="slide active"><img scr="photo4.jpg" alt="Memory 4"></div>
         <div class="camera-flash"></div>
     </div>
 
-    <footer>Made with ❤️ by Lavi</footer>
+    <footer>Wishes from Lavi</footer>
 
     <audio id="birthdayAudio">
         <source src="bd.mp3" type="audio/mpeg">
@@ -263,7 +264,6 @@
             // Disable button
             button.disabled = true;
             
-            // Stop after 36 seconds
             setTimeout(() => {
                 clearInterval(slideshowInterval);
                 clearInterval(fireworksInterval);
