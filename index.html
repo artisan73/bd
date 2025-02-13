@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Marie! 🎉</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <title>Birthday</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,8 +14,8 @@
 
         body {
             min-height: 100vh;
-            font-family: 'Montserrat', sans-serif;
-           /* background: #f5f5f5;*/
+            font-family: 'Playfair Display', serif;
+            background: #e6e2d3;
             overflow-x: hidden;
         }
 
@@ -34,20 +34,10 @@
         h1 {
             font-family: 'Pacifico', cursive;
             font-size: 4.5rem;
-            color: #ff6b6b;
+            color: #6b4f4f;
             margin-bottom: 1rem;
-            position: relative;
-            z-index: 3;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            animation: heartbeat 1.5s ease infinite;
-        }
-
-        .message {
-            font-size: 1.8rem;
-            color: #333;
-            max-width: 800px;
-            line-height: 1.6;
-            margin: 2rem 0;
+            animation: vintageTextGlow 3s ease-in-out infinite;
         }
 
         .slideshow-container {
@@ -56,8 +46,9 @@
             height: 500px;
             margin: 2rem auto;
             overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            background: #000;
         }
 
         .slide {
@@ -65,25 +56,33 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            transform: scale(0.95);
+            transition: opacity 1s ease-in-out;
+            transform: scale(0.95) rotate(0.5deg);
         }
 
         .slide.active {
             opacity: 1;
-            transform: scale(1);
-        }
-
-        .slide.vintage {
-            filter: grayscale(100%) sepia(50%);
-            transition: filter 0.5s ease;
+            transform: scale(1) rotate(0deg);
         }
 
         .slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 15px;
+            transition: all 1s ease;
+        }
+
+        .vintage-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, rgba(0,0,0,0.1) 10%, transparent 30%),
+                repeating-linear-gradient(-45deg, rgba(0,0,0,0.1) 0 1px, transparent 1px 3px);
+            mix-blend-mode: multiply;
+            pointer-events: none;
         }
 
         .camera-flash {
@@ -94,59 +93,58 @@
             height: 100%;
             background: rgba(255, 255, 255, 0.9);
             opacity: 0;
+            animation: vintageFlash 0.5s ease-out;
+        }
+
+        .film-grain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4d5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c8TV1mAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvEOwtAAAFVklEQVR4XpWWB67c2BUFb3g557T/hRo9/WUMZHlgr4Bg8Z4qQgQJlHI4A8SzFVrapvmTF9O7dmYRFZ60YiBhJRCgh1FYhiLAmdvX0CzTOpNE77ME0Zty/nWWzchDtiqrmQDeuv3powQ5ta2eN0FY0InkqDD73lT9c9lEzwUNqgFHs9VQce3TVClFCQrSTfOiYkVJQBmpbq2L6iZavPnAPcoU0dSw0SUTqz/GtrGuXfbyyBniKykOWQWGqwwMA7QiYAxi+IlPdqo+hYHnUt5ZPfnsHJyNiDtnpJyayNBkF6cWoYGAMY92U2hXHF/C1M8uP/ZtYdiuj26UdAdQQSXQErwSOMzt/XWRWAz5GuSBIkwG1H3FabJ2OsUOUhGC6tK4EMtJO0ttC6IBD3kM0ve0tJwMdSfjZo+EEISaeTr9P3wYrGjXqyC1krcKdhMpxEnt5JetoulscpyzhXN5FRpuPHvbeQaKxFAEB6EN+cYN6xD7RYGpXpNndMmZgM5Dcs3YSNFDHUo2LGfZuukSWyUYirJAdYbF3MfqEKmjM+I2EfhA94iG3L7uKrR+GdWD73ydlIB+6hgref1QTlmgmbM3/LeX5GI1Ux1RWpgxpLuZ2+I+IjzZ8wqE4nilvQdkUdfhzI5QDWy+kw5Wgg2pGpeEVeCCA7b85BO3F9DzxB3cdqvBzWcmzbyMiqhzuYqtHRVG2y4x+KOlnyqla8AoWWpuBoYRxzXrfKuILl6SfiWCbjxoZJUaCBj1CjH7GIaDbc9kqBY3W/Rgjda1iqQcOJu2WW+76pZC9QG7M00dffe9hNnseupFL53r8F7YHSwJWUKP2q+k7RdsxyOB11n0xtOvnW4irMMFNV4H0uqwS5ExsmP9AxbDTc9JwgneAT5vTiUSm1E7BSflSt3bfa1tv8Di3R8n3Af7MNWzs49hmauE2wP+ttrq+AsWpFG2awvsuOqbipWHgtuvuaAE+A1Z/7gC9hesnr+7wqCwG8c5yAg3AL1fm8T9AZtp/bbJGwl1pNrE7RuOX7PeMRUERVaPpEs+yqeoSmuOlokqw49pgomjLeh7icHNlG19yjsXX4R1T0zH4Gh9C3vGg+pJyGPtScr4QHa8PAAAAAElFTkSuQmCC');
+            opacity: 0.3;
             pointer-events: none;
-            z-index: 2;
+        }
+
+        @keyframes vintageFlash {
+            0% { opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes vintagePhotoAppear {
+            0% { filter: brightness(300%) contrast(50%) grayscale(100%); }
+            100% { filter: brightness(90%) contrast(110%) grayscale(100%) sepia(50%); }
+        }
+
+        @keyframes vintageTextGlow {
+            0%, 100% { text-shadow: 2px 2px 4px rgba(107, 79, 79, 0.3); }
+            50% { text-shadow: 4px 4px 8px rgba(107, 79, 79, 0.5); }
         }
 
         .button {
-            background: #ff6b6b;
-            color: white;
+            background: #6b4f4f;
+            color: #e6e2d3;
             padding: 18px 45px;
             border: none;
-            border-radius: 35px;
+            border-radius: 2px;
             font-size: 1.3rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(255,107,107,0.3);
-            z-index: 3;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .button:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .firework {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #ff6b6b;
-            border-radius: 50%;
-            animation: explode 1s forwards;
-            z-index: 1;
-        }
-
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(20); opacity: 0; }
-        }
-
-        @keyframes flash {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+        .button:hover {
+            background: #584040;
         }
 
         footer {
             text-align: center;
             padding: 2rem;
-            color: #666;
+            color: #6b4f4f;
             font-size: 1.1rem;
             position: relative;
             z-index: 2;
@@ -154,7 +152,6 @@
 
         @media (max-width: 768px) {
             h1 { font-size: 3rem; }
-            .message { font-size: 1.4rem; }
             .slideshow-container { height: 300px; }
         }
     </style>
@@ -162,18 +159,26 @@
 <body>
     <section class="hero">
         <h1>Happy Birthday Marie!</h1>
-        <p class="message">
-            🌟 Your special day deserves special memories! Let's capture the moment! 📸
-        </p>
-        <button class="button" onclick="startCelebration()">Start Magic ✨</button>
+        <div class="slideshow-container">
+            <div class="slide active">
+                <img src="photo1.jpg" alt="Memory 1">
+                <div class="film-grain"></div>
+                <div class="vintage-overlay"></div>
+            </div>
+            <div class="slide">
+                <img src="photo2.jpg" alt="Memory 2">
+                <div class="film-grain"></div>
+                <div class="vintage-overlay"></div>
+            </div>
+            <div class="slide">
+                <img src="photo3.jpg" alt="Memory 3">
+                <div class="film-grain"></div>
+                <div class="vintage-overlay"></div>
+            </div>
+            <div class="camera-flash"></div>
+        </div>
+        <button class="button" onclick="startCelebration()">Capture Memories</button>
     </section>
-
-    <div class="slideshow-container">
-        <div class="slide active"><img src="photo1.jpg" alt="Memory 1"></div>
-        <div class="slide"><img src="photo2.jpg" alt="Memory 2"></div>
-        <div class="slide"><img src="photo3.jpg" alt="Memory 3"></div>
-        <div class="camera-flash"></div>
-    </div>
 
     <footer>Made with ❤️ by Lavi</footer>
 
@@ -181,7 +186,7 @@
         <source src="bd.mp3" type="audio/mpeg">
     </audio>
     <audio id="shutterSound">
-        <source src="shutter.mp3" type="audio/mpeg">
+        <source src="vintage-shutter.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -190,34 +195,27 @@
         const flash = document.querySelector('.camera-flash');
         const shutterSound = document.getElementById('shutterSound');
 
-        function createFirework() {
-            const firework = document.createElement('div');
-            firework.className = 'firework';
-            firework.style.left = Math.random() * 100 + '%';
-            firework.style.top = Math.random() * 100 + '%';
-            document.body.appendChild(firework);
-            setTimeout(() => firework.remove(), 1000);
-        }
-
         function triggerCameraEffect() {
-            // Activate flash only on the photo container
-            flash.style.animation = 'flash 0.3s';
+            // Activate vintage flash
+            flash.style.display = 'block';
+            flash.style.animation = 'vintageFlash 0.5s ease-out';
             
-            // Play shutter sound
+            // Play mechanical shutter sound
             shutterSound.currentTime = 0;
             shutterSound.play();
-            
-            // Add vintage effect after flash
-            setTimeout(() => {
-                slides[currentSlide].classList.add('vintage');
-            }, 300);
 
-            // Transition after 1 second
+            // Apply vintage photo development effect
+            slides[currentSlide].querySelector('img').style.animation = 'vintagePhotoAppear 1.5s ease-out forwards';
+
+            // Transition to next slide after delay
             setTimeout(() => {
-                slides[currentSlide].classList.remove('active', 'vintage');
+                slides[currentSlide].classList.remove('active');
                 currentSlide = (currentSlide + 1) % slides.length;
                 slides[currentSlide].classList.add('active');
-            }, 1300);
+                
+                // Reset animation for next slide
+                slides[currentSlide].querySelector('img').style.animation = '';
+            }, 2500);
         }
 
         function startCelebration() {
@@ -228,16 +226,12 @@
             audio.play();
             const slideshowInterval = setInterval(triggerCameraEffect, 3000);
             
-            // Start fireworks
-            const fireworksInterval = setInterval(createFirework, 150);
-            
             // Disable button
             button.disabled = true;
             
             // Stop after 26 seconds
             setTimeout(() => {
                 clearInterval(slideshowInterval);
-                clearInterval(fireworksInterval);
                 button.disabled = false;
             }, 26000);
         }
