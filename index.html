@@ -80,6 +80,22 @@
             object-fit: cover;
             border-radius: 15px;
             transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .vintage-frame::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border: 3px solid #fff;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2),
+                       inset 0 0 40px rgba(0,0,0,0.1);
+            z-index: 2;
+            pointer-events: none;
         }
 
         .camera-flash {
@@ -219,15 +235,17 @@
             
             // Apply vintage effect with animation
             currentImage.style.animation = 'vintageEffect 0.5s ease forwards';
+            slides[currentSlide].classList.add('vintage-frame');
 
             // Wait 1 second before transition
             setTimeout(() => {
-                slides[currentSlide].classList.remove('active');
+                slides[currentSlide].classList.remove('active', 'vintage-frame');
                 currentSlide = (currentSlide + 1) % slides.length;
                 slides[currentSlide].classList.add('active');
                 
                 // Reset animation for next slide
-                slides[currentSlide].querySelector('img').style.animation = '';
+                const nextImage = slides[currentSlide].querySelector('img');
+                nextImage.style.animation = '';
             }, 1000);
         }
 
@@ -245,12 +263,12 @@
             // Disable button
             button.disabled = true;
             
-            // Stop after 26 seconds
+            // Stop after 36 seconds
             setTimeout(() => {
                 clearInterval(slideshowInterval);
                 clearInterval(fireworksInterval);
                 button.disabled = false;
-            }, 26000);
+            }, 36000);
         }
     </script>
 </body>
